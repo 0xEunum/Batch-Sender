@@ -14,18 +14,18 @@ export default function TransactionDetails({
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-between items-center">
-          <span className="text-gray-700 dark:text-gray-300 text-xs">
+          <span className="text-gray-700 dark:text-gray-300 text-sm">
             Token Name:
           </span>
-          <span className="font-semibold text-right text-xs break-all">
+          <span className="font-semibold text-right text-sm break-all">
             {tokenName || "-"}
           </span>
         </div>
         <div className="flex flex-row justify-between items-center">
-          <span className="text-gray-700 dark:text-gray-300 text-xs">
+          <span className="text-gray-700 dark:text-gray-300 text-sm">
             Total Amount (tokens):
           </span>
-          <span className="font-semibold text-right text-xs break-all">
+          <span className="font-semibold text-right text-sm break-all">
             {amountTokens || "-"}
           </span>
         </div>

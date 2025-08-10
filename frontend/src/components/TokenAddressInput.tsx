@@ -4,11 +4,20 @@ import { usePublicClient } from "wagmi";
 import { erc20Abi } from "viem";
 
 export default function TokenAddressInput({
+  value,
+  onChange,
+  onError,
   onTokenInfo,
 }: {
-  onTokenInfo?: (info: { name: string; symbol: string }) => void;
+  value: string;
+  onChange: (val: string) => void;
+  onError?: (err: string) => void;
+  onTokenInfo?: (info: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  }) => void;
 }) {
-  const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [tokenInfo, setTokenInfo] = useState<{
@@ -25,7 +34,7 @@ export default function TokenAddressInput({
     setTokenInfo(null);
     try {
       if (!publicClient) throw new Error("No public client available");
-      const [name, symbol] = await Promise.all([
+      const [name, symbol, decimals] = await Promise.all([
         publicClient.readContract({
           address: addr as `0x${string}`,
           abi: erc20Abi,
@@ -36,9 +45,18 @@ export default function TokenAddressInput({
           abi: erc20Abi,
           functionName: "symbol",
         }),
+        publicClient.readContract({
+          address: addr as `0x${string}`,
+          abi: erc20Abi,
+          functionName: "decimals",
+        }),
       ]);
       setTokenInfo({ name: name as string, symbol: symbol as string });
-      onTokenInfo?.({ name: name as string, symbol: symbol as string });
+      onTokenInfo?.({
+        name: name as string,
+        symbol: symbol as string,
+        decimals: Number(decimals),
+      });
     } catch {
       setError(
         "Could not fetch token details. Make sure this is a valid ERC-20 token address."
@@ -49,21 +67,27 @@ export default function TokenAddressInput({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value);
+    onChange(e.target.value);
     setTokenInfo(null);
     setError("");
+    onError?.("");
   };
 
   const handleBlur = () => {
-    if (!address) return;
-    if (!isValidAddress(address)) {
+    if (!value) return;
+    if (!isValidAddress(value)) {
       setError(
         "Invalid token address. Must be 42 characters and hexadecimal (0x...)"
       );
       setTokenInfo(null);
+      onError?.(
+        "Invalid token address. Must be 42 characters and hexadecimal (0x...)"
+      );
       return;
     }
-    fetchTokenInfo(address);
+    setError("");
+    onError?.("");
+    fetchTokenInfo(value);
   };
 
   return (
@@ -77,7 +101,7 @@ export default function TokenAddressInput({
           error ? "border-red-500" : "border-gray-300"
         } dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors`}
         placeholder="0x..."
-        value={address}
+        value={value}
         onChange={handleChange}
         onBlur={handleBlur}
         maxLength={42}
