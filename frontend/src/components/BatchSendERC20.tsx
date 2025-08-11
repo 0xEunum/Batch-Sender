@@ -170,8 +170,13 @@ export default function BatchSendERC20() {
         return;
       }
       try {
+        const decimals = tokenInfo.decimals;
         const allowance = await fetchAllowanceAmount();
-        setApproveNeeded(allowance < totalAmount);
+        const totalAmountWithDecimals = parseUnits(
+          totalAmount.toString(),
+          decimals
+        );
+        setApproveNeeded(allowance < totalAmountWithDecimals);
       } catch {
         setApproveNeeded(false);
       } finally {
@@ -200,6 +205,16 @@ export default function BatchSendERC20() {
           minimumFractionDigits: 2,
           maximumFractionDigits: 6,
         })}
+        amountWei={
+          tokenInfo
+            ? String(
+                recipients
+                  .map((r) => parseUnits(r.amount || "0", tokenInfo.decimals))
+                  .reduce((a, b) => a + b, BigInt(0))
+              )
+            : "-"
+        }
+        decimals={tokenInfo?.decimals || 0}
       />
       {checkingApprove || txLoading ? (
         <div className="flex justify-center my-2">
@@ -210,7 +225,7 @@ export default function BatchSendERC20() {
         </div>
       ) : (
         <button
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold text-base sm:text-lg shadow-lg hover:from-blue-600 hover:to-blue-500 transition mt-3 mb-1 disabled:opacity-60 disabled:cursor-not-allowed tracking-wide"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold text-base sm:text-lg shadow-lg hover:from-blue-600 hover:to-blue-500 transition mt-3 mb-1 disabled:opacity-60 disabled:cursor-not-allowed tracking-wide cursor-pointer"
           onClick={handleSendTokens}
           disabled={!isFormValid || checkingApprove || txLoading}
         >
@@ -250,7 +265,7 @@ function DialogTxSuccess({ hash, chainId }: { hash: string; chainId: number }) {
           </a>
         </div>
         <button
-          className="mt-2 px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          className="mt-2 px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition cursor-pointer"
           onClick={() => window.location.reload()}
         >
           Close

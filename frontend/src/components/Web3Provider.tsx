@@ -15,7 +15,7 @@ const config = getDefaultConfig({
   appName: "Batch Sender dApp",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
   chains: [sepolia, mainnet, anvil],
-  ssr: false,
+  ssr: true,
 });
 
 const queryClient = new QueryClient();

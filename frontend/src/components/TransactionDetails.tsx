@@ -3,10 +3,22 @@ import React from "react";
 export default function TransactionDetails({
   tokenName,
   amountTokens,
+  amountWei,
+  decimals,
 }: {
   tokenName: string;
   amountTokens: string | number;
+  amountWei: string | number;
+  decimals: number;
 }) {
+  // Format amountWei with appropriate decimals
+  const formattedWei =
+    typeof amountWei === "string" || typeof amountWei === "number"
+      ? Number(amountWei).toLocaleString("en-US", {
+          maximumFractionDigits: 0,
+        })
+      : "-";
+
   return (
     <div className="w-full bg-white/95 dark:bg-gray-900/95 rounded-lg border border-gray-200 dark:border-gray-800 shadow p-3 mb-4">
       <div className="font-bold text-base text-blue-700 dark:text-blue-400 mb-2 text-center">
@@ -27,6 +39,14 @@ export default function TransactionDetails({
           </span>
           <span className="font-semibold text-right text-sm break-all">
             {amountTokens || "-"}
+          </span>
+        </div>
+        <div className="flex flex-row justify-between items-center">
+          <span className="text-gray-700 dark:text-gray-300 text-sm">
+            Total Amount (wei{decimals ? `, ${decimals} decimals` : ""}):
+          </span>
+          <span className="font-semibold text-right text-sm break-all">
+            {formattedWei}
           </span>
         </div>
       </div>
