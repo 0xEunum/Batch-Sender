@@ -7,7 +7,7 @@ export const CONTRACTS: Record<number, { ERC20BatchSender: `0x${string}`, ERC20B
     ERC20BatchSenderAbi: ERC20BatchSenderAbi,
   },
   11155111: {
-    ERC20BatchSender: '0x793543C9D70BA172042125cECdc792c68eDc6782',
+    ERC20BatchSender: '0xd426a477594ddD6380A421B4E9DA410e17895b4B',
     ERC20BatchSenderAbi: ERC20BatchSenderAbi,
   },
   421614: {
