@@ -8,13 +8,27 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { anvil, mainnet, sepolia } from "wagmi/chains";
+import {
+  mainnet,
+  sepolia,
+  zksyncSepoliaTestnet,
+  arbitrumSepolia,
+  optimismSepolia,
+  anvil,
+} from "wagmi/chains";
 import { ReactNode } from "react";
 
 const config = getDefaultConfig({
   appName: "Batch Sender dApp",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-  chains: [sepolia, mainnet, anvil],
+  chains: [
+    mainnet,
+    sepolia,
+    zksyncSepoliaTestnet,
+    arbitrumSepolia,
+    optimismSepolia,
+    anvil,
+  ],
   ssr: false,
 });
 

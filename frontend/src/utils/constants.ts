@@ -10,8 +10,16 @@ export const CONTRACTS: Record<number, { ERC20BatchSender: `0x${string}`, ERC20B
     ERC20BatchSender: '0xd426a477594ddD6380A421B4E9DA410e17895b4B',
     ERC20BatchSenderAbi: ERC20BatchSenderAbi,
   },
+  300: {
+    ERC20BatchSender: "0x33fcC44E4e47CAC3934ae9dF8013984033c1Dd00",
+    ERC20BatchSenderAbi: ERC20BatchSenderAbi,
+  },
+  11155420: {
+    ERC20BatchSender: "0x430973f9F475470A95d84144B50671b5E169de00",
+    ERC20BatchSenderAbi: ERC20BatchSenderAbi,
+  },
   421614: {
-    ERC20BatchSender: '0xYourArbSepoliaAddress',
+    ERC20BatchSender: '0xf60eff56861232F6A50dC545c07ab76898ef49b5',
     ERC20BatchSenderAbi: ERC20BatchSenderAbi,
   },
   31337: {
